@@ -1,0 +1,2 @@
+# TakeNote
+Notes App MVP

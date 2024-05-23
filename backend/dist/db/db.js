@@ -18,17 +18,7 @@ if (process.env.CLEARDB_DATABASE_URL) {
         database: url.pathname.slice(1), // Remove leading '/' from pathname
         multipleStatements: true
     };
-    console.log("url.pathname.slice(1)");
-    console.log("url.pathname.slice(1)");
-    console.log("url.pathname.slice(1)");
-    console.log("url.pathname.slice(1)");
-    console.log("url.pathname.slice(1)");
-    console.log("url.pathname.slice(1)");
-    console.log(url.pathname.slice(1));
-    sql = `
-    USE ${url.pathname.slice(1)}; 
-
-    CREATE TABLE IF NOT EXISTS notes (
+    sql = `CREATE TABLE IF NOT EXISTS notes (
         id INT AUTO_INCREMENT PRIMARY KEY,
         content VARCHAR(300) NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

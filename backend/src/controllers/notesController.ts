@@ -17,7 +17,7 @@ export const createNote = (req: Request, res: Response) => {
 }
 
 export const getAllNotes = (req: Request, res: Response) => {
-    const sql = "Select * from notes ORDER BY updated_at DESC";
+    const sql = "SELECT * from notes ORDER BY updated_at DESC";
     db.query(sql, (err, results) => {
         if(err) throw err;
         res.json(results);

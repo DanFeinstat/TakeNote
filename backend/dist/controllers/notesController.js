@@ -22,7 +22,7 @@ const createNote = (req, res) => {
 };
 exports.createNote = createNote;
 const getAllNotes = (req, res) => {
-    const sql = "Select * from notes ORDER BY updated_at DESC";
+    const sql = "SELECT * from notes ORDER BY updated_at DESC";
     db_1.default.query(sql, (err, results) => {
         if (err)
             throw err;

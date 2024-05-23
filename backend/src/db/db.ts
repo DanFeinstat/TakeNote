@@ -56,7 +56,6 @@ db.connect((err) => {
   db.query(sql, (err, _) => {
       if (err) throw err;
       console.log('Database and tables created...');
-      db.end();
     });
 });
 

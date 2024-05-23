@@ -54,7 +54,6 @@ db.connect((err) => {
         if (err)
             throw err;
         console.log('Database and tables created...');
-        db.end();
     });
 });
 exports.default = db;

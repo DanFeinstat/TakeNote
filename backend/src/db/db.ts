@@ -18,8 +18,14 @@ if (process.env.CLEARDB_DATABASE_URL) {
     multipleStatements: true
   };
 
+  console.log("url.pathname.slice(1)");
+  console.log("url.pathname.slice(1)");
+  console.log("url.pathname.slice(1)");
+  console.log("url.pathname.slice(1)");
+  console.log("url.pathname.slice(1)");
+  console.log("url.pathname.slice(1)");
+  console.log(url.pathname.slice(1));
   sql = `
-
     USE ${url.pathname.slice(1)}; 
 
     CREATE TABLE IF NOT EXISTS notes (

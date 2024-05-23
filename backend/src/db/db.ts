@@ -4,7 +4,7 @@ import path from 'path';
 import dotenv from 'dotenv';
 
 // Read SQL file
-const sqlFile = path.join(__dirname, './sql/schema.sql');
+const sqlFile = path.join(__dirname, '../sql/schema.sql');
 const sql = fs.readFileSync(sqlFile, 'utf8');
 
 dotenv.config();

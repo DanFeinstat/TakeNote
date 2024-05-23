@@ -8,7 +8,7 @@ const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 const dotenv_1 = __importDefault(require("dotenv"));
 // Read SQL file
-const sqlFile = path_1.default.join(__dirname, './sql/schema.sql');
+const sqlFile = path_1.default.join(__dirname, '../sql/schema.sql');
 const sql = fs_1.default.readFileSync(sqlFile, 'utf8');
 dotenv_1.default.config();
 let connectionConfig;

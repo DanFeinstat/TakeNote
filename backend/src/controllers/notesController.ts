@@ -1,58 +1,94 @@
-import {Request, Response} from 'express';
-import db from '../db/db';
+import { Request, Response } from 'express';
+import { RowDataPacket, ResultSetHeader } from 'mysql2';
+import pool from '../db/db';
 
-export const createNote = (req: Request, res: Response) => {
+export const createNote = async (req: Request, res: Response): Promise<void> => {
     const { content } = req.body;
-    // validate content
-    if(content.length < 20 || content.length > 301){
-        return res.status(400).send('Content must be between 20 and 301 characters');
+    
+    if (typeof content !== 'string' || content.length < 20 || content.length > 301) {
+        res.status(400).send('Content must be between 20 and 301 characters');
+        return;
     }
-    // if these sql query strings were going to be reused somewhere we'd extract them but since they're not 
-    // I'd rather colocate them with the function that uses them for readability
+
     const sql = 'INSERT INTO notes (content) VALUES (?)';
-    db.query(sql, [content], (err, result) => {
-        if(err) throw err;
-        res.send(result);
-    })
-}
 
-export const getAllNotes = (req: Request, res: Response) => {
-    const sql = "SELECT * from notes ORDER BY updated_at DESC";
-    db.query(sql, (err, results) => {
-        if(err) throw err;
-        res.json(results);
-    })
-}
-
-export const updateNote = (req: Request, res: Response) => {
-    const { id } = req.params;
-    const { content} = req.body;
-    const sql = 'UPDATE notes SET content = ? WHERE id = ?';
-
-    if(content.length < 20 || content.length > 301){
-        return res.status(400).send('Content must be between 20 and 301 characters');
+    try {
+        const [result] = await pool.query<ResultSetHeader>(sql, [content]);
+        res.status(201).send(result);
+    } catch (err) {
+        console.error('Error creating note:', err);
+        res.status(500).send('Internal server error');
     }
-
-    db.query(sql, [content, id], (err, result) => {
-        if(err) throw err;
-        res.send(result);
-    });
 };
 
-export const deleteNote = (req: Request, res: Response) => {
+export const getAllNotes = async (req: Request, res: Response): Promise<void> => {
+    const sql = 'SELECT * FROM notes ORDER BY updated_at DESC';
+
+    try {
+        const [results] = await pool.query<RowDataPacket[]>(sql);
+        res.json(results);
+    } catch (err) {
+        console.error('Error fetching notes:', err);
+        res.status(500).send('Internal server error');
+    }
+};
+
+export const updateNote = async (req: Request, res: Response): Promise<void> => {
+    const { id } = req.params;
+    const { content } = req.body;
+
+    if (typeof content !== 'string' || content.length < 20 || content.length > 301) {
+        res.status(400).send('Content must be between 20 and 301 characters');
+        return;
+    }
+
+    const sql = 'UPDATE notes SET content = ? WHERE id = ?';
+
+    try {
+        const [result] = await pool.query<ResultSetHeader>(sql, [content, id]);
+        if (result.affectedRows === 0) {
+            res.status(404).send('Note not found');
+        } else {
+            res.send(result);
+        }
+    } catch (err) {
+        console.error('Error updating note:', err);
+        res.status(500).send('Internal server error');
+    }
+};
+
+export const deleteNote = async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params;
     const sql = 'DELETE FROM notes WHERE id = ?';
-    db.query(sql, [id], (err, result) => {
-        if(err) throw err;
-        res.send(result);
-    })
-}
 
-export const searchNotes = (req: Request, res: Response) => {
+    try {
+        const [result] = await pool.query<ResultSetHeader>(sql, [id]);
+        if (result.affectedRows === 0) {
+            res.status(404).send('Note not found');
+        } else {
+            res.send(result);
+        }
+    } catch (err) {
+        console.error('Error deleting note:', err);
+        res.status(500).send('Internal server error');
+    }
+};
+
+export const searchNotes = async (req: Request, res: Response): Promise<void> => {
     const { q } = req.query;
+
+    if (typeof q !== 'string') {
+        res.status(400).send('Invalid query parameter');
+        return;
+    }
+
     const sql = 'SELECT * FROM notes WHERE content LIKE ? ORDER BY updated_at DESC';
-    db.query(sql, [`%${q}%`], (err, results) => {
-        if (err) throw err;
+
+    try {
+        const [results] = await pool.query<RowDataPacket[]>(sql, [`%${q}%`]);
         res.json(results);
-    });
+    } catch (err) {
+        console.error('Error searching notes:', err);
+        res.status(500).send('Internal server error');
+    }
 };

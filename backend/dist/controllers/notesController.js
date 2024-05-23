@@ -1,66 +1,103 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.searchNotes = exports.deleteNote = exports.updateNote = exports.getAllNotes = exports.createNote = void 0;
 const db_1 = __importDefault(require("../db/db"));
-const createNote = (req, res) => {
+const createNote = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { content } = req.body;
-    // validate content
-    if (content.length < 20 || content.length > 301) {
-        return res.status(400).send('Content must be between 20 and 301 characters');
+    if (typeof content !== 'string' || content.length < 20 || content.length > 301) {
+        res.status(400).send('Content must be between 20 and 301 characters');
+        return;
     }
-    // if these sql query strings were going to be reused somewhere we'd extract them but since they're not 
-    // I'd rather colocate them with the function that uses them for readability
     const sql = 'INSERT INTO notes (content) VALUES (?)';
-    db_1.default.query(sql, [content], (err, result) => {
-        if (err)
-            throw err;
-        res.send(result);
-    });
-};
+    try {
+        const [result] = yield db_1.default.query(sql, [content]);
+        res.status(201).send(result);
+    }
+    catch (err) {
+        console.error('Error creating note:', err);
+        res.status(500).send('Internal server error');
+    }
+});
 exports.createNote = createNote;
-const getAllNotes = (req, res) => {
-    const sql = "SELECT * from notes ORDER BY updated_at DESC";
-    db_1.default.query(sql, (err, results) => {
-        if (err)
-            throw err;
+const getAllNotes = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const sql = 'SELECT * FROM notes ORDER BY updated_at DESC';
+    try {
+        const [results] = yield db_1.default.query(sql);
         res.json(results);
-    });
-};
+    }
+    catch (err) {
+        console.error('Error fetching notes:', err);
+        res.status(500).send('Internal server error');
+    }
+});
 exports.getAllNotes = getAllNotes;
-const updateNote = (req, res) => {
+const updateNote = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     const { content } = req.body;
-    const sql = 'UPDATE notes SET content = ? WHERE id = ?';
-    if (content.length < 20 || content.length > 301) {
-        return res.status(400).send('Content must be between 20 and 301 characters');
+    if (typeof content !== 'string' || content.length < 20 || content.length > 301) {
+        res.status(400).send('Content must be between 20 and 301 characters');
+        return;
     }
-    db_1.default.query(sql, [content, id], (err, result) => {
-        if (err)
-            throw err;
-        res.send(result);
-    });
-};
+    const sql = 'UPDATE notes SET content = ? WHERE id = ?';
+    try {
+        const [result] = yield db_1.default.query(sql, [content, id]);
+        if (result.affectedRows === 0) {
+            res.status(404).send('Note not found');
+        }
+        else {
+            res.send(result);
+        }
+    }
+    catch (err) {
+        console.error('Error updating note:', err);
+        res.status(500).send('Internal server error');
+    }
+});
 exports.updateNote = updateNote;
-const deleteNote = (req, res) => {
+const deleteNote = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     const sql = 'DELETE FROM notes WHERE id = ?';
-    db_1.default.query(sql, [id], (err, result) => {
-        if (err)
-            throw err;
-        res.send(result);
-    });
-};
+    try {
+        const [result] = yield db_1.default.query(sql, [id]);
+        if (result.affectedRows === 0) {
+            res.status(404).send('Note not found');
+        }
+        else {
+            res.send(result);
+        }
+    }
+    catch (err) {
+        console.error('Error deleting note:', err);
+        res.status(500).send('Internal server error');
+    }
+});
 exports.deleteNote = deleteNote;
-const searchNotes = (req, res) => {
+const searchNotes = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { q } = req.query;
+    if (typeof q !== 'string') {
+        res.status(400).send('Invalid query parameter');
+        return;
+    }
     const sql = 'SELECT * FROM notes WHERE content LIKE ? ORDER BY updated_at DESC';
-    db_1.default.query(sql, [`%${q}%`], (err, results) => {
-        if (err)
-            throw err;
+    try {
+        const [results] = yield db_1.default.query(sql, [`%${q}%`]);
         res.json(results);
-    });
-};
+    }
+    catch (err) {
+        console.error('Error searching notes:', err);
+        res.status(500).send('Internal server error');
+    }
+});
 exports.searchNotes = searchNotes;

@@ -19,7 +19,8 @@ if (process.env.CLEARDB_DATABASE_URL) {
         host: url.hostname,
         user: url.username,
         password: url.password,
-        database: url.pathname.slice(1) // Remove leading '/' from pathname
+        database: url.pathname.slice(1), // Remove leading '/' from pathname
+        multipleStatements: true
     };
 }
 else {
@@ -28,7 +29,8 @@ else {
         host: process.env.DB_HOST,
         user: process.env.DB_USER,
         password: process.env.DB_PASSWORD,
-        database: process.env.DB_NAME
+        database: process.env.DB_NAME,
+        multipleStatements: true
     };
 }
 const db = mysql2_1.default.createConnection(connectionConfig);

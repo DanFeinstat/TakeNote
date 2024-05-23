@@ -19,7 +19,7 @@
   "scripts": {
     "start-client": "react-scripts start",
     "build": "react-scripts build",
-    "postbuild": "cp -r client/build backend/dist/build",
+    "postbuild": "cp -r ./build ../backend/dist/build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

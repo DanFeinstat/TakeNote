@@ -1,19 +1,25 @@
-import React, {memo, useCallback, useEffect, useState} from 'react';
+import React, { memo, useCallback, useEffect, useState } from 'react';
 import { useNotes } from '../../context/NotesContext';
 import { Note } from '../../types';
+import { useForm } from '../../hooks/useForm';
 import styles from './NoteListItem.module.css';
-
 
 interface NoteListItemProps {
     note: Note;
 };
 
+const validateNote = (content: string) => {
+    if (content.length < 20 || content.length > 300) {
+        return `Note must be between 20 and 300 characters, but is ${content.length} characters long`;
+    }
+    return null;
+};
+
 const NoteListItem: React.FC<NoteListItemProps> = ({ note }) => {
     const { id, content } = note;
-    const [newContent, setNewContent] = useState(content);
-    const [ editing, setEditing] = useState(false);
-    const [errorDetails, setErrorDetails] = useState<string | null>(null);
+    const [editing, setEditing] = useState(false);
     const inputRef = React.createRef<HTMLTextAreaElement>();
+
     const {
         loading,
         setCurrentNote,
@@ -25,38 +31,40 @@ const NoteListItem: React.FC<NoteListItemProps> = ({ note }) => {
         if (editing && inputRef.current) {
             inputRef.current.focus();
         }
-    }, [editing, inputRef.current]);
+    }, [editing, inputRef]);
 
-    const handleInputChange = useCallback((event: React.ChangeEvent<HTMLTextAreaElement>) => {
-        setNewContent(event.target.value);
-         setErrorDetails(null);
-    }, [setNewContent])
+    const {
+        value: newContent,
+        errorDetails,
+        handleInputChange,
+        handleSubmit,
+        handleReset
+    } = useForm({
+        initialValue: content,
+        validate: validateNote,
+        onSubmit: (newContent) => {
+            updateNote(newContent);
+            setEditing(false);
+        }
+    });
 
     const handleClick = useCallback(() => {
         setCurrentNote(note); 
-        setEditing(true)
-    }, [setCurrentNote, note]); 
+        setEditing(true);
+    }, [setCurrentNote, note]);
 
-    const handleUpdate = useCallback((event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        const trimmedContent = newContent.trim();
-        if(trimmedContent.length > 20 && newContent.length < 301){
-            updateNote(newContent);
-            setEditing(false);
-        } else {
-            setErrorDetails(`Note must be between 20 and 300 characters, but is ${trimmedContent.length} characters long`);
-        }
-    }, [updateNote, newContent]);
+    const handleDelete = useCallback(() => {
+        deleteNote(id);
+    }, [deleteNote, id]);
 
-    const handleDelete = useCallback(() => {deleteNote(id)}, [deleteNote, id]);
-
-    const handleCancel = useCallback(() =>{
+    const handleCancel = useCallback(() => {
         setEditing(false);
         setCurrentNote(null);
-    },[setEditing, setCurrentNote])
+        handleReset();
+    }, [setEditing, setCurrentNote, handleReset]);
 
     return editing ? (
-        <form onSubmit={handleUpdate} className={styles.form}>
+        <form onSubmit={handleSubmit} className={styles.form}>
             <textarea
                 className={`${styles.textarea} ${errorDetails ? styles.error : ''}`}
                 disabled={loading}
@@ -65,18 +73,18 @@ const NoteListItem: React.FC<NoteListItemProps> = ({ note }) => {
                 onChange={handleInputChange}
                 ref={inputRef}
             />
-            {errorDetails && <p className={styles.error}>{errorDetails}</p>}
+            {errorDetails && <p className={styles.errortext}>{errorDetails}</p>}
             <div className={styles.nav}>
-                <button type="submit" className={`${styles.button} ${styles.submit}`}>Submit</button>
-                <button className={`${styles.button} ${styles.cancel}`} onClick={() => {handleCancel()}}>Cancel</button>
+                <button type="submit" className={`${styles.button} ${styles.submit}`} disabled={loading}>Submit</button>
+                <button className={`${styles.button} ${styles.cancel}`} onClick={handleCancel} disabled={loading}>Cancel</button>
             </div>
         </ form>
     ) : (
-        <li className={styles.item} >
-                <p className={styles.content} >
-                    <span onClick={handleClick} >{content}</span>
-                    <button className={styles.delete} onClick={handleDelete}>Delete</button>
-                </p>
+        <li className={styles.item}>
+            <div className={styles.content}>
+                <p className={styles.text} onClick={handleClick}>{content}</p>
+                <button className={styles.delete} onClick={handleDelete}>Delete</button>
+            </div>
         </li>
     );
 };

@@ -1,34 +1,24 @@
-import { memo, useCallback, useState } from "react";
+import { memo } from "react";
 import { useNotes } from "../../context/NotesContext";
+import { useForm } from "../../hooks/useForm";
+import validateNote from "../../utils/validateNote";
 import styles from './AddNote.module.css';
+
 
 export default memo(function AddNote() {
     const { loading, createNote } = useNotes();
-    const [ value, setValue ] = useState('');
-    const [errorDetails, setErrorDetails] = useState<string | null>(null);
 
-    const handleInputChange = useCallback((event: React.ChangeEvent<HTMLTextAreaElement>) => {
-        setValue(event.target.value);
-        if(errorDetails){
-         setErrorDetails(null);
-        }
-    }, [setValue]);
-
-    const handleSubmit = useCallback((event:React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        const trimmedContent = value.trim();
-        if(trimmedContent.length > 20 && value.length < 301){
-                createNote(value)
-                handleReset();
-        } else {
-            setErrorDetails(`Note must be between 20 and 300 characters, but is ${trimmedContent.length} characters long`);
-        }
-    }, [createNote, value]);
-
-    const handleReset = useCallback(() => {
-        setValue('');
-        setErrorDetails(null);
-    }, [setValue]);
+    const {
+        value,
+        errorDetails,
+        handleInputChange,
+        handleSubmit,
+        handleReset
+    } = useForm({
+        initialValue: '',
+        validate: validateNote,
+        onSubmit: createNote
+    });
 
     return (
         <div>
@@ -43,11 +33,12 @@ export default memo(function AddNote() {
                     onChange={handleInputChange}
                     disabled={loading}
                  />
-                 {errorDetails && <p className={styles.error}>{errorDetails}</p>}
+                 {errorDetails && <p className={styles.errortext}>{errorDetails}</p>}
                  <div className={styles.nav}>
                     <button 
                         className={`${styles.button} ${styles.submit}`}
                         type="submit" 
+                        disabled={loading}
                     >
                         Add Note
                     </button>
@@ -55,9 +46,10 @@ export default memo(function AddNote() {
                         className={`${styles.button} ${styles.cancel}`}
                         type="reset" 
                         onClick={handleReset}
+                        disabled={loading}
                     >Cancel</button>
                  </div>
             </form>
         </div>
-    )
+    );
 });

@@ -4,6 +4,8 @@ The Quick Notes Web App is a straightforward web application designed for creati
 
 ## DemoLink: 
 
+PLEASE KEEP IN MIND THAT HEROKU TAKES A MINUTE TO WARM UP IF THE APP HAS BEEN INACTIVE.  AS SUCH IT MIGHT INITIALLY DISPLAY AS AN ERROR OR EMPTY BUT WILL WORK AFTER A SHORT TIME.
+
 https://solace-chat-challenge-df-055aa7cf2ceb.herokuapp.com/
 
 ## Technologies

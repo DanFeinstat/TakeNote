@@ -4,7 +4,7 @@ The Quick Notes Web App is a straightforward web application designed for creati
 
 ## Demo Link
 
-Please keep in mind that Heroku takes a minute to warm up if the app has been inactive. As such, it might initially display as an error or empty but will work after a short time.
+Please keep in mind that Heroku takes a minute to warm up if the app has been inactive. As such, it might initially display as an error such as "Error: Error: Service Unavailable" but will work after a short time.
 
 [Quick Notes Web App Demo](https://solace-chat-challenge-df-055aa7cf2ceb.herokuapp.com/)
 

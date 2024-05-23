@@ -1,4 +1,3 @@
-import { useNotes } from "../context/NotesContext";
 import { Notes } from "../types";
 import NoteList from "./noteList/NoteList";
 import NoteListFilter from "./noteListFilter/NoteListFilter";
@@ -9,16 +8,8 @@ interface ListViewProps {
     notes: Notes | null;
 }
 
-function AddNoteButton() {
-    const { setAddNote } = useNotes();
-    return (
-        <button className={`${styles.button} ${styles.edit}`} onClick={() => setAddNote(true)}>Add Note</button>
-    )
-
-}
-
 export default function MainPage({notes}: ListViewProps) {
-    return notes ? (
+    return (
         <div className={styles.container}>
             <h1 className={styles.title}>Quick Notes</h1>
             <AddNote/>
@@ -26,5 +17,5 @@ export default function MainPage({notes}: ListViewProps) {
             <h2 className={styles.title}>Your Notes</h2>
             <NoteList notes={notes} />
         </div>
-    ): (<AddNoteButton />)
+    )
 }

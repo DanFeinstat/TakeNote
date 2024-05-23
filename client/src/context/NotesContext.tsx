@@ -3,17 +3,12 @@ import { Note } from '../types';
 
 interface NotesContextProps {
     loading: boolean;
-    addNote: boolean;
-    editing: boolean;
-    setEditing: (editing: boolean) => void;
-    setAddNote: (addNote: boolean) => void;
     setSearchQuery: (query: string) => void;
     currentNote:  Note | null;
     setCurrentNote: (note: Note | null) => void;
     updateNote: (newContent: string) => void;
     deleteNote: (id: number) => void;
     createNote: (newContent: string) => void;
-    refetch: () => void;
 }
 
 const NotesContext = createContext<NotesContextProps | undefined>(undefined);

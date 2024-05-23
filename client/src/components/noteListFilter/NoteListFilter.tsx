@@ -29,8 +29,11 @@ export default memo(function NoteListFilter() {
     });
 
     return (
-        <div className={styles.filter}>
+        <form className={styles.filter} onSubmit={handleSubmitSearch}>
+            <label htmlFor="search">Search Notes:</label>
             <input
+                id="search"
+                name="search"
                 className={styles.input}
                 disabled={loading}
                 type="text"
@@ -41,8 +44,8 @@ export default memo(function NoteListFilter() {
             />
             <div className={styles.nav}>
                 <button 
+                    type="submit"
                     className={`${styles.button} ${styles.submit}`} 
-                    onClick={handleSubmitSearch} 
                     disabled={loading}
                 >
                     Search
@@ -55,6 +58,6 @@ export default memo(function NoteListFilter() {
                     Reload Notes
                 </button>
             </div>
-        </div>
+        </form>
     );
 });

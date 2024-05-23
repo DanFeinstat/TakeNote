@@ -13,6 +13,10 @@
     align-self: flex-end;
 }
 
+.title {
+    text-align: center;
+}
+
 .edit {
     color: color(display-p3 0.256 0.354 0.755);
     background-color: color(display-p3 0.008 0.239 0.886/0.067);

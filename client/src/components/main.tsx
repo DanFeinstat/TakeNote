@@ -20,9 +20,10 @@ function AddNoteButton() {
 export default function MainPage({notes}: ListViewProps) {
     return notes ? (
         <div className={styles.container}>
-            <h2 className={styles.title}>Your Notes</h2>
+            <h1 className={styles.title}>Quick Notes</h1>
             <AddNote/>
             <NoteListFilter />
+            <h2 className={styles.title}>Your Notes</h2>
             <NoteList notes={notes} />
         </div>
     ): (<AddNoteButton />)

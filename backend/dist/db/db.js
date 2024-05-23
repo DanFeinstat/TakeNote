@@ -4,14 +4,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const mysql2_1 = __importDefault(require("mysql2"));
-const fs_1 = __importDefault(require("fs"));
-const path_1 = __importDefault(require("path"));
 const dotenv_1 = __importDefault(require("dotenv"));
-// Read SQL file
-const sqlFile = path_1.default.join(__dirname, '../sql/schema.sql');
-const sql = fs_1.default.readFileSync(sqlFile, 'utf8');
 dotenv_1.default.config();
 let connectionConfig;
+let sql;
 if (process.env.CLEARDB_DATABASE_URL) {
     // Heroku ClearDB setup
     const url = new URL(process.env.CLEARDB_DATABASE_URL);
@@ -22,6 +18,16 @@ if (process.env.CLEARDB_DATABASE_URL) {
         database: url.pathname.slice(1), // Remove leading '/' from pathname
         multipleStatements: true
     };
+    sql = `
+
+    USE ${url.pathname.slice(1)}; 
+
+    CREATE TABLE IF NOT EXISTS notes (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        content VARCHAR(300) NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    );`;
 }
 else {
     // Local setup
@@ -32,6 +38,16 @@ else {
         database: process.env.DB_NAME,
         multipleStatements: true
     };
+    sql = `CREATE DATABASE IF NOT EXISTS notes;
+
+    USE notes; 
+
+    CREATE TABLE IF NOT EXISTS notes (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        content VARCHAR(300) NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    );`;
 }
 const db = mysql2_1.default.createConnection(connectionConfig);
 db.connect((err) => {

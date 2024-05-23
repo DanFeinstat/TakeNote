@@ -1,15 +1,11 @@
 import mysql from 'mysql2';
-import fs from 'fs';
-import path from 'path';
 import dotenv from 'dotenv';
-
-// Read SQL file
-const sqlFile = path.join(__dirname, '../sql/schema.sql');
-const sql = fs.readFileSync(sqlFile, 'utf8');
 
 dotenv.config();
 
 let connectionConfig;
+
+let sql;
 
 if (process.env.CLEARDB_DATABASE_URL) {
   // Heroku ClearDB setup
@@ -21,6 +17,18 @@ if (process.env.CLEARDB_DATABASE_URL) {
     database: url.pathname.slice(1), // Remove leading '/' from pathname
     multipleStatements: true
   };
+
+  sql = `
+
+    USE ${url.pathname.slice(1)}; 
+
+    CREATE TABLE IF NOT EXISTS notes (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        content VARCHAR(300) NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    );`;
+
 } else {
   // Local setup
   connectionConfig = {
@@ -29,8 +37,18 @@ if (process.env.CLEARDB_DATABASE_URL) {
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
     multipleStatements: true
-
   };
+
+  sql = `CREATE DATABASE IF NOT EXISTS notes;
+
+    USE notes; 
+
+    CREATE TABLE IF NOT EXISTS notes (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        content VARCHAR(300) NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    );`;
 }
 
 const db = mysql.createConnection(connectionConfig);

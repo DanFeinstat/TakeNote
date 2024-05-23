@@ -6,15 +6,29 @@ import path from 'path';
 const sqlFile = path.join(__dirname, '../sql/schema.sql');
 const sql = fs.readFileSync(sqlFile, 'utf8');
 
-console.log(sql);
+let connectionConfig;
 
+if (process.env.CLEARDB_DATABASE_URL) {
+    // Heroku ClearDB setup
+    const url = new URL(process.env.CLEARDB_DATABASE_URL);
+    connectionConfig = {
+      host: url.hostname,
+      user: url.username,
+      password: url.password,
+      database: url.pathname.slice(1), // Remove leading '/' from pathname
+      multipleStatements: true,
+    };
+  } else {
+    // Local setup
+    connectionConfig = {
+      host: process.env.DB_HOST,
+      user: process.env.DB_USER,
+      password: process.env.DB_PASSWORD,
+      multipleStatements: true,
+    };
+  }
 // Create MySQL connection
-const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'S1eeperd',
-    multipleStatements: true
-});
+const db = mysql.createConnection(connectionConfig);
 
 // Execute SQL
 db.connect(err => {

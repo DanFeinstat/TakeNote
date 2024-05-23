@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "ts-node ./src/index.ts",
     "setupdb": "ts-node ./src/databaseSetup.ts",
-    "build": "tsc && node copySchema.js"
+    "build": "tsc"
   },
   "keywords": [],
   "author": "",

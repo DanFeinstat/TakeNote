@@ -45,13 +45,13 @@ To run the Notes Web App locally, follow these steps:
 
 ## Design Considerations
 
-This was more of an MVP project than production level code, and I think the design and architecture choices reflect to a degree but not completely. For example I used create-react-app with typescript because it's fast and simple boilerplate that I'm more familiar with than next.js.
+This was more of an MVP project than production level code, and I think the design and architecture choices reflect that to a degree but not completely. For example I used create-react-app with typescript because it's fast and simple boilerplate that I'm more familiar with than next.js.
 
-On the other hand, considering the size, simplicity and lack of a need to scale I could have comfortably used a very lightweight database solution such as SQLite. MySQL adds a little more required setup but it also offers more robust features, so if we did decide to scale the project it would be a better option. For example if we wanted to make the notes app multiplayer, allowing realtime editing buy multiple individuals and account sharing, SQLite would potentially start to struggle to fulfill our needs.
+On the other hand, considering the size, simplicity and lack of a need to scale I could have comfortably used a very lightweight database solution such as SQLite. MySQL adds a little more required setup but it also offers more robust features, so if we did decide to scale the project it would be a better option. For example if we wanted to make the notes app multiplayer, allowing real time editing by multiple individuals and account sharing, SQLite would potentially struggle to fulfill our needs.
 
-There were a couple of ways to go with the note filtering. It could have been done purely on the front end, just filtering the display while holding data for all the notes. I generally prefer to not keep extra data on the client side of an application though. If we needed to filter quickly and constantly, such as if we'd decided to filter on input change, then I would have considered using the front end to filter, especially if we had a more complex query or were struggling with the amount of traffic we had.
+There were a couple of ways to go with the note filtering. It could have been done purely on the front end, just filtering the display while holding data for all the notes. I generally prefer to not keep extra data on the client side of an application though. If we needed to filter quickly and constantly, such as if we'd decided to filter on input change, then I would have considered using the front end to filter.  Especially so if we had a more complex query or were struggling with the amount of traffic we had.
 
-I also initially was building this out as a multi-view SPA, but after building it with a 'ListView' for filtering and selection and a 'SingleNote' view for reading the full note and editing it, I decided that keeping it one one page and allowing edits in place was a smoother and more intuitive UX.
+I also initially was building this out as a multi-view SPA, but after building it with a 'ListView' for filtering and selection and a 'SingleNote' view for reading the full note and editing it, I decided that keeping it as one page and allowing edits in place was a smoother and more intuitive UX.
 
 ## Hypothetical Roadmap
 

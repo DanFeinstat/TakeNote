@@ -1,13 +1,16 @@
 import mysql from 'mysql2';
 
+import dotenv from 'dotenv'
+dotenv.config();
+
 // chose MySQL over SQLite because MySQL is more popular and has more features 
 // and if we want to scale the app in the future, it will be easier to do so with MySQL.
 // If scaling is not a consideration I'd probablhy switch to SQLite for its simplicity.
 const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'password',
-    database: 'notes_app'
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
 });
 
 db.connect((err) => {

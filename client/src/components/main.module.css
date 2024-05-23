@@ -1,0 +1,25 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    padding: 3em;
+}
+
+.button {
+    height: 32px;
+    width: 68px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    align-self: flex-end;
+}
+
+.edit {
+    color: color(display-p3 0.256 0.354 0.755);
+    background-color: color(display-p3 0.008 0.239 0.886/0.067);
+}
+.edit:hover {
+    background-color: color(display-p3 0.004 0.247 1/0.114);
+}
+.edit:active {
+    background-color: color(display-p3 0.004 0.235 1/0.169);
+}

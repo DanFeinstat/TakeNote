@@ -1,6 +1,8 @@
-import express from 'express';
+
+import  express  from 'express';
 import cors from 'cors';
 import notesRoutes from './routes/notesRoutes';
+
 
 const PORT = process.env.PORT || 3001;
 

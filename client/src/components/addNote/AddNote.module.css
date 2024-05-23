@@ -1,0 +1,61 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    gap: 0.5em;
+}
+.textarea {
+    padding: 1rem;
+    border-radius: 4px;
+    resize: none;
+    font-size: 1rem;
+    font-family: 'Roboto', sans-serif;
+}
+
+.button {
+    height: 32px;
+    width: 68px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+}
+
+.error {
+    background-color: color(display-p3 0.859 0.008 0.294/0.083);
+    border-color: color(display-p3 0.731 0.195 0.388);
+}
+
+.errortext {
+    color: color(display-p3 0.731 0.195 0.388);
+}
+
+.nav {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.cancel {
+    color: color(display-p3 0.76 0.34 0);
+    background-color: color(display-p3 0.922 0.584 0.008/0.15);
+}
+
+.cancel:hover {
+    background-color: color(display-p3 1 0.604 0.004/0.314);
+}
+
+.cancel:active {
+    background-color: color(display-p3 1 0.569 0.004/0.416);
+}
+
+.submit {
+    color: color(display-p3 0.08 0.48 0.63);
+    background-color: color(display-p3 0.004 0.694 0.796/0.114);
+}
+
+.submit:hover {
+ background-color: color(display-p3 0.004 0.678 0.784/0.181);
+}
+.submit:active {
+background-color: color(display-p3 0.004 0.624 0.733/0.248);
+}

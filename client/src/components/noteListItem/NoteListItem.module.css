@@ -1,0 +1,100 @@
+.item {
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.content {
+  display: flex;
+  cursor: pointer;    
+  justify-content: space-between;
+  padding: 1rem;
+}
+
+.delete {
+    height: 32px;
+    background-color: color(display-p3 0.859 0.008 0.294/0.083);
+    color: color(display-p3 0.731 0.195 0.388);
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+}
+.delete:hover {
+    background-color: color(display-p3 0.827 0.008 0.298/0.134);
+}
+.delete:active {
+    background-color: color(display-p3 0.753 0.008 0.275/0.189);
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+.nav {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.textarea {
+    width: 100%;
+    height: 100%;
+    padding: 1rem;
+    border-radius: 4px;
+    resize: none;
+    font-size: 1rem;
+    font-family: 'Roboto', sans-serif;
+}
+
+.button {
+    height: 32px;
+    width: 54px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+}
+
+.error {
+    color: color(display-p3 0.731 0.195 0.388);
+}
+
+.cancel {
+    color: color(display-p3 0.76 0.34 0);
+    background-color: color(display-p3 0.922 0.584 0.008/0.15);
+}
+
+.cancel:hover {
+    background-color: color(display-p3 1 0.604 0.004/0.314);
+}
+
+.cancel:active {
+    background-color: color(display-p3 1 0.569 0.004/0.416);
+}
+
+.edit {
+    color: color(display-p3 0.256 0.354 0.755);
+    background-color: color(display-p3 0.008 0.239 0.886/0.067);
+}
+.edit:hover {
+    background-color: color(display-p3 0.004 0.247 1/0.114);
+}
+.edit:active {
+    background-color: color(display-p3 0.004 0.235 1/0.169);
+}
+
+.submit {
+    color: color(display-p3 0.08 0.48 0.63);
+    background-color: color(display-p3 0.004 0.694 0.796/0.114);
+}
+
+.submit:hover {
+ background-color: color(display-p3 0.004 0.678 0.784/0.181);
+}
+.submit:active {
+background-color: color(display-p3 0.004 0.624 0.733/0.248);
+}
+
+.error {
+    border-color: color(display-p3 0.76 0.34 0);
+}

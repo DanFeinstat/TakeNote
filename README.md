@@ -89,4 +89,4 @@ It's been a while since I deployed a project from scratch and getting the config
 
 I also think I should have taken more time initially to plan out my UX, because building a multi-view app first and then deleting around half the code and rewriting a cleaner, drier, leaner app probably doubled my work time.
 
-Getting to build something like this was a lot of fun and kind of nostalgic so however it goes I appreciated the experience!
+Getting to build something like this was a lot of fun and kind of nostalgic.  However it goes I appreciated the experience and look foward to getting torn apart in the code review.

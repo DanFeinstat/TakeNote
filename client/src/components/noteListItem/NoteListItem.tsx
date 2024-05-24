@@ -3,16 +3,10 @@ import { useNotes } from '../../context/NotesContext';
 import { Note } from '../../types';
 import { useForm } from '../../hooks/useForm';
 import styles from './NoteListItem.module.css';
+import validateNote from '../../utils/validateNote';
 
 interface NoteListItemProps {
     note: Note;
-};
-
-const validateNote = (content: string) => {
-    if (content.length < 20 || content.length > 300) {
-        return `Note must be between 20 and 300 characters, but is ${content.length} characters long`;
-    }
-    return null;
 };
 
 const NoteListItem: React.FC<NoteListItemProps> = ({ note }) => {

@@ -5,7 +5,7 @@ import validateNote from "../../utils/validateNote";
 import styles from './AddNote.module.css';
 
 
-export default memo(function AddNote() {
+export default function AddNote() {
     const { loading, createNote } = useNotes();
 
     const {
@@ -52,4 +52,4 @@ export default memo(function AddNote() {
             </form>
         </div>
     );
-});
+};

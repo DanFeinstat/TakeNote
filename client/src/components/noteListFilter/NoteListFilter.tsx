@@ -1,4 +1,4 @@
-import { memo, useCallback, useRef } from "react";
+import { memo, useRef } from "react";
 import { useNotes } from "../../context/NotesContext";
 import { useForm } from "../../hooks/useForm";
 import styles from './NoteListFilter.module.css';
@@ -8,13 +8,13 @@ export default memo(function NoteListFilter() {
 
     const inputRef = useRef<HTMLInputElement>(null);
 
-    const onSubmitCallback = useCallback((value:string ) => {
+    const onSubmitCallback = (value:string ) => {
         setSearchQuery(value);
-    },[setSearchQuery]);
+    };
     
-    const onResetCallback = useCallback(() => {
+    const onResetCallback = () => {
         setSearchQuery('');
-    },[setSearchQuery]);
+    };
 
     const {
         value,

@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useEffect, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { useNotes } from '../../context/NotesContext';
 import { Note } from '../../types';
 import { useForm } from '../../hooks/useForm';
@@ -48,20 +48,20 @@ const NoteListItem: React.FC<NoteListItemProps> = ({ note }) => {
         }
     });
 
-    const handleClick = useCallback(() => {
+    const handleClick = () => {
         setCurrentNote(note); 
         setEditing(true);
-    }, [setCurrentNote, note]);
+    };
 
-    const handleDelete = useCallback(() => {
+    const handleDelete = () => {
         deleteNote(id);
-    }, [deleteNote, id]);
+    };
 
-    const handleCancel = useCallback(() => {
+    const handleCancel = () => {
         setEditing(false);
         setCurrentNote(null);
         handleReset();
-    }, [setEditing, setCurrentNote, handleReset]);
+    };
 
     return editing ? (
         <form onSubmit={handleSubmit} className={styles.form}>
